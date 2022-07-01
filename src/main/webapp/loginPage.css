@@ -1,0 +1,84 @@
+.nav
+{
+    padding: 1px;
+    height: 70px;
+    background-color: #36a9e1;
+    box-shadow: 0px 20px 10px -15px lightblue;
+}
+
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color:#f1f1f1;
+}
+
+form {
+    border-radius: 9px;
+    color: #36a9e1;
+    height: 370px;
+    margin: 100px 450px;
+    padding: 0px;;
+    background-color:white;
+    box-shadow: 5px 2px 20px lightblue;
+    width: 25%;
+}
+
+input[type=text]
+{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #36a9e1;
+    box-sizing: border-box;
+    border-radius: 9px;
+}
+
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #36a9e1;
+    box-sizing: border-box;
+    border-radius: 9px;
+}
+
+.loginButton {
+    background-color: #36a9e1;
+    color: white;
+    padding: 14px 20px;
+    margin-top: 2px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.loginButton:hover {
+    cursor: pointer;
+    transition-delay: 0.2s;
+    background-color:rgb(46, 162, 201);
+    box-shadow: 7px 7px 5px lightblue;
+}
+
+.container {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.container1
+{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    background-color: #36a9e1;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    padding: 21px;
+    height: 20px;
+}
+
+.loginButton
+{
+    border-radius: 9px;
+}

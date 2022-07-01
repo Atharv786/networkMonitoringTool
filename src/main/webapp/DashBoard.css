@@ -1,0 +1,107 @@
+.MonitorAvailability
+{
+    background-color: white;
+    width: 96%;
+    margin-left: 2%;
+    height: 300px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Up
+{
+    border-radius: 15px;
+    display: inline-block;
+    background-color: #36a9e1;
+    height: 150px;
+    width: 250px;
+    margin-left: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Down
+{
+    border-radius: 15px;
+    display: inline-block;
+    background-color: #36a9e1;
+    height: 150px;
+    width: 250px;
+    margin-left: 50px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Unknown
+{
+    border-radius: 15px;
+    display: inline-block;
+    background-color: #36a9e1;
+    height: 150px;
+    width: 250px;
+    margin-left: 50px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Total
+{
+    border-radius: 15px;
+    display: inline-block;
+    background-color: #36a9e1;
+    height: 150px;
+    width: 250px;
+    margin-left: 50px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Top5Monitor
+{
+    display: inline-block;
+    background-color: white;
+    width: 30%;
+    height: 250px;
+    margin-left: 2%;
+    margin-top: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.MonitorGroup
+{
+    display: inline-block;
+    background-color: white;
+    width: 65%;
+    height: 250px;
+    margin-left: 1%;
+    margin-top: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Top5Cpu
+{
+    display: inline-block;
+    background-color: white;
+    width: 30%;
+    height: 250px;
+    margin-left: 2%;
+    margin-top: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Top5Memory
+{
+    display: inline-block;
+    background-color: white;
+    width: 30%;
+    height: 250px;
+    margin-left: 3%;
+    margin-top: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}
+
+.Top5Disk
+{
+    display: inline-block;
+    background-color: white;
+    width: 30%;
+    height: 250px;
+    margin-left: 3%;
+    margin-top: 40px;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.4));
+}

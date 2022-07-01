@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+
+    <constant name="struts.devMode" value="true"/>
+
+    <package name="default" extends="struts-default, json-default">
+
+        <action name="">
+            <result>/index.jsp</result>
+        </action>
+
+        <action name="login" class="action.LoginAction" method="login">
+            <result name="login" type="json"></result>
+
+        </action>
+
+        <action name="logout" class="action.LoginAction" method="logout">
+            <result name="logout">/index.jsp</result>
+        </action>
+
+        <action name="addDeviceUrl" class="action.InsertionAction" method="insertionAction">
+            <result name="insertion" type="json"></result>
+        </action>
+
+        <action name="addMonitor" class="action.ProvisionAction" method="provisionAction">
+            <result name="provision" type="json"></result>
+        </action>
+
+        <action name="discovery" class="action.DiscoveryAction" method="discovery">
+            <result name="discovery" type="json"></result>
+        </action>
+
+            <action name="monitor" class="action.MonitorAction" method="monitor">
+            <result name="monitor" type="json"></result>
+        </action>
+
+        <action name="deleteDiscovery" class="action.DeleteDiscovery" method="deleteDiscoveryAction">
+            <result name="deletionSuccessfull" type="json"></result>
+        </action>
+
+        <action name="deleteMonitor" class="action.DeleteMonitor" method="deleteMonitorAction">
+            <result name="deletionSuccessfull" type="json"></result>
+        </action>
+
+        <action name="updateDevice" class="action.UpdateDiscoveryAction" method="updateDiscovery">
+            <result name="updateSuccess" type="json"></result>
+        </action>
+
+        <action name="Polling" class="action.PollingAction" method="Polling">
+            <result name="success" type="json"></result>
+        </action>
+
+        <action name="dashboard" class="action.DashBoardAction" method="loadDashboard">
+            <result name="success" type="json"></result>
+        </action>
+
+    </package>
+
+
+</struts>
