@@ -53,7 +53,9 @@ public class UpdateDiscoveryService
 
                 update.add(bean.getIp());
 
-                affectedRow = dao.update("select * from credentials where deviceIP=?", update);
+                flag = dao.select("select * from credentials where deviceIP=?", update);
+
+                System.out.println(affectedRow);
 
                 bean.setAddDeviceUsername2(bean.getAddDeviceUsername2().replaceAll("\\s",""));
 
@@ -67,7 +69,7 @@ public class UpdateDiscoveryService
 
                 update.add(bean.getAddDevicePassword2());
 
-                if(affectedRow!=0)
+                if(!flag.isEmpty())
                 {
                     update.add(bean.getIp());
 

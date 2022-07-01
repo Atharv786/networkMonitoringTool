@@ -54,6 +54,8 @@ public class ProvisionService
                 {
                     provision.clear();
 
+                    Ip = Ip.replaceAll("\\s","");
+
                     provision.add(Ip);
 
                     flag = dao.select("select * from credentials where deviceIp=?", provision);
