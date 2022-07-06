@@ -1,5 +1,8 @@
 package util;
 
+import bean.DiscoveryBean;
+import service.DiscoveryService;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -8,27 +11,39 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class MultipleDiscovery
 {
-    static BlockingQueue<String> queue=new LinkedBlockingQueue<>();
+    static BlockingQueue<DiscoveryBean> queue=new LinkedBlockingQueue<>();
 
-    public static void sendRequest(String Ip)
+    public static void discovery()
     {
-        try {
-            queue.put(Ip);
-        } catch (InterruptedException e) {
+        Boolean valid = true;
+
+        new Thread(() -> {
+
+            while (valid)
+            {
+                try
+                {
+                    DiscoveryService.provision(queue.take());
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+    }
+
+    public static void put(DiscoveryBean bean)
+    {
+        try
+        {
+            queue.put(bean);
+        }
+        catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public static String getRequest()
-    {
-        String ip=null;
-
-        try {
-            ip= queue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return ip;
-    }
 }

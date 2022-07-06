@@ -5,6 +5,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import service.DiscoveryService;
 import helper.Validator;
+import util.MultipleDiscovery;
 
 public class DiscoveryAction extends ActionSupport implements ModelDriven<DiscoveryBean>
 {
@@ -81,14 +82,7 @@ public class DiscoveryAction extends ActionSupport implements ModelDriven<Discov
     public String provision()
     {
 
-        if(DiscoveryService.provision(bean))
-        {
-            bean.setStatus("success");
-        }
-        else
-        {
-            bean.setStatus("unsuccess");
-        }
+        MultipleDiscovery.put(bean);
 
         return "success";
     }

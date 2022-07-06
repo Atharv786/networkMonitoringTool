@@ -3,6 +3,7 @@ package servlet;
 import Polling.QuartzScheduler;
 
 import helper.ConnectionPoolHandler;
+import util.MultipleDiscovery;
 
 import javax.servlet.http.HttpServlet;
 
@@ -17,5 +18,7 @@ public class OnServerStart extends HttpServlet
         scheduler.create();
 
         scheduler.start();
+
+        MultipleDiscovery.discovery();
     }
 }
