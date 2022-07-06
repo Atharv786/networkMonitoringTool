@@ -1,7 +1,7 @@
 package service;
 
 import bean.DashboardBean;
-import helper.GetDashboardData;
+import helper.GetData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class DashboardService
     {
         try
         {
-            GetDashboardData getData = new GetDashboardData();
+            GetData getData = new GetData();
 
             ArrayList<Object> data = getData.getDashboardData();
 

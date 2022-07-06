@@ -3,7 +3,6 @@ package service;
 import bean.MonitorBean;
 import dao.DAO;
 import helper.GetData;
-import helper.GetPollingData;
 
 import java.util.ArrayList;
 
@@ -43,15 +42,15 @@ public class MonitorService
     {
         try
         {
-            GetPollingData getPollingData = new GetPollingData();
+            GetData getData = new GetData();
 
             if (bean.getType().equals("Ping"))
             {
-                bean.setPingStatistic(getPollingData.getPingStatistics(bean.getId()));
+                bean.setPingStatistic(getData.getPingStatistics(bean.getId()));
             }
             else
             {
-                bean.setSshStatistic(getPollingData.getSshStatistics(bean.getId()));
+                bean.setSshStatistic(getData.getSshStatistics(bean.getId()));
             }
         }
         catch (Exception e)
