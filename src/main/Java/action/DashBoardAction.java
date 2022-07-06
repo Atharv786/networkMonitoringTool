@@ -23,6 +23,10 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<Dashbo
         return "success";
     }
 
+
+
+
+
     @Override
     public DashboardBean getModel() {
         return bean;

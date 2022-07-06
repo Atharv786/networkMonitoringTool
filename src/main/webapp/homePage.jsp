@@ -12,20 +12,27 @@
 
 <head>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="loginJS.js"></script>
-        <script src="homePageJS.js"></script>
-        <script src="Polling.js"></script>
-        <script src=https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="JavaScript/Discovery.js"></script>
+    <script src="JavaScript/loginJS.js"></script>
+    <script src="JavaScript/homePageJS.js"></script>
+    <script src="JavaScript/Alerts.js"></script>
+    <script src="JavaScript/DashBoard.js"></script>
+    <script src="JavaScript/Monitor.js"></script>
+    <script src="JavaScript/Ajax.js"></script>
 
 
-        <link rel="stylesheet" href="homePageCSS.css">
-        <link rel="stylesheet" href="DashBoard.css">
-        <link rel="stylesheet" href=https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src=https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
+    <link rel="stylesheet" href="homePageCSS.css">
+    <link rel="stylesheet" href="DashBoard.css">
+    <link rel="stylesheet" href=https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body>
@@ -33,8 +40,8 @@
 
 <div class="nav">
     <ul>
-        <li><a class="Home" style="background-color: white; color: #36a9e1;"><i class="fa fa-home icon"></i> Dashboard</a></li>
-        <li><a class="AboutUs"><i class="fa fa-search icon"></i> Discovery</a></li>
+        <li><a class="Home"><i class="fa fa-home icon"></i> Dashboard</a></li>
+        <li><a class="AboutUs" style="background-color: white; color: #36a9e1;"><i class="fa fa-search icon"></i> Discovery</a></li>
         <li><a class="ContactUs"><i class="fa fa-desktop icon"></i> Monitor</a></li>
         <div class="navbar">
             <li><a class="SignOut" id="SignOut"><i class="fa fa-sign-out icon" style="font-size: 18px;"></i> SignOut</a></li>
@@ -46,7 +53,7 @@
 <button onclick="document.getElementById('id01').style.display='block'" class="addDeviceButton">Add Device</button>
 
 
-<div class="discovery" style="background-color:white; display:none; width: 70%; margin-left: 15%; margin-top: 5%">
+<div class="discovery" style="background-color:white; width: 70%; margin-left: 15%; margin-top: 5%">
     <h2 class="h1">Discovery Table</h2>
     <table id="discoveryTable" style="width: 98%; background-color: #f1f1f1">
         <thead>
@@ -164,7 +171,7 @@
     </form>
 </div>
 
-<div class="Dashboard">
+<div class="Dashboard" style="display:none;">
 
     <div class="MonitorAvailability">
 
@@ -394,6 +401,5 @@
 
 </body>
 </html>
-
 
 

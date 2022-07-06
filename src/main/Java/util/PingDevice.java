@@ -12,7 +12,8 @@ import java.util.Date;
 public class PingDevice {
 
 
-    public static boolean pingDevice(String ip, String id) {
+    public static boolean pingDevice(String ip, String id)
+    {
 
         boolean flag=false;
 
@@ -122,13 +123,13 @@ public class PingDevice {
 
             data1.add(id);
 
-            DAO dao= new DAO();
+            DAO.update("insert into PingPOlling(ID,IP,PacketLoss,RecievedPacket,RTT_Time,Time_Stamp)"+"values(?,?,?,?,?,?)", data);
 
-            dao.update("insert into PingPOlling(ID,IP,PacketLoss,RecievedPacket,RTT_Time,Time_Stamp)"+"values(?,?,?,?,?,?)", data);
+            DAO.update("update monitorTable set deviceStatus=? WHERE deviceId=?",data1);
 
-            dao.update("update monitorTable set deviceStatus=? WHERE deviceId=?",data1);
-
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 

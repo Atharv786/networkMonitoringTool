@@ -33,7 +33,8 @@ public class DashboardService
             bean.setTopDisk((List<HashMap<String, String>>) data.get(5));
 
 
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }

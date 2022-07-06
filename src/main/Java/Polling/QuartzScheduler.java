@@ -23,11 +23,11 @@ public class QuartzScheduler
             scheduler = schedulerFactory.getScheduler();
 
             JobDetail job = JobBuilder.newJob(PollingJob.class)
-                    .withIdentity("myJob", "group1")
+                    .withIdentity("pollingJob", "group1")
                     .build();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity("myTrigger", "group1")
+                    .withIdentity("pollingTrigger", "group1")
                     .startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                             .withIntervalInSeconds(60)

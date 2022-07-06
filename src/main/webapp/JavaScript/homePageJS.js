@@ -4,14 +4,22 @@
 
 $(document).ready(function(){
 
+    discovery.load();
+
     $(".AboutUs").click(function(){
 
         $(".PollingData").hide();
+
         $(".Dashboard").hide();
+
         $(".monitor").hide();
+
         $(".discovery").show();
+
         $(".addDeviceButton").show();
+
         $(".Content").hide();
+
         $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
         $(".Home, .ContactUs, .SignOut").css({"background-color":"#36a9e1","color":"white"});
         $(".AboutUs").hover(function(){
@@ -39,10 +47,17 @@ $(document).ready(function(){
     $(".Home").click(function(){
 
         $(".PollingData").hide();
+
         $(".Dashboard").show();
+
         $(".monitor").hide();
+
         $(".addDeviceButton").hide();
+
         $(".discovery").hide();
+
+        dashboard.load();
+
         $(".Content").html("<h1>Hello Home Page</h1>");
         $(".Content").css({"text-align":"center"});
         $(".Home").css({"background-color":"white","color":"#36a9e1"});
@@ -72,10 +87,17 @@ $(document).ready(function(){
     $(".ContactUs").click(function()
     {
         $(".PollingData").hide();
+
         $(".Dashboard").hide();
+
         $(".monitor").show();
+
         $(".addDeviceButton").hide();
+
         $(".discovery").hide();
+
+        monitor.load();
+
         $(".Content").css({"text-align":"center"});
         $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
         $(".Home, .AboutUs, .SignOut").css({"background-color":"#36a9e1","color":"white"});
@@ -107,7 +129,9 @@ $(document).ready(function(){
             url : "logout",
             callback: functions.onSignOutButtonBind
         }
-        functions.loginAjax(request);
+
+        ajax.ajaxRequest(request);
+
     });
 
     $("#closePolling").click(function()
@@ -135,8 +159,10 @@ $(document).ready(function(){
             type : "POST",
             callback : functions.onload
         }
-        functions.loginAjax(request);
+
+        ajax.ajaxRequest(request);
 
     });
 
 });
+

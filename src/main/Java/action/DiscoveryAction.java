@@ -1,28 +1,101 @@
 package action;
 
-import service.DiscoveryService;
 import bean.DiscoveryBean;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-/**
- * Created by atharv on 21/4/22.
- */
+import service.DiscoveryService;
+import helper.Validator;
+
 public class DiscoveryAction extends ActionSupport implements ModelDriven<DiscoveryBean>
 {
-    DiscoveryBean bean=new DiscoveryBean();
 
+    DiscoveryBean bean = new DiscoveryBean();
 
-    public String discovery()
+    public String load()
     {
-        DiscoveryService.addDiscovery(bean);
-        bean.setStatus("discoverAddSuccessfully");
+        DiscoveryService.load(bean);
 
-        return "discovery";
+        bean.setStatus("success");
+
+        return "success";
     }
+
+    public String insertion()
+    {
+
+        if(Validator.validation(bean))
+        {
+            if (DiscoveryService.insertion(bean))
+            {
+                bean.setStatus("success");
+            }
+            else
+            {
+                bean.setStatus("unsuccess");
+            }
+        }
+        else
+        {
+            bean.setStatus("invalid");
+        }
+
+        return "success";
+    }
+
+    public String update()
+    {
+        if(Validator.validation(bean))
+        {
+            if (DiscoveryService.update(bean))
+            {
+                bean.setStatus("success");
+            }
+            else
+            {
+                bean.setStatus("unsuccess");
+            }
+        }
+        else
+        {
+            bean.setStatus("invalid");
+        }
+
+
+        return "success";
+    }
+
+    public String delete()
+    {
+        if(DiscoveryService.delete(bean))
+        {
+            bean.setStatus("success");
+        }
+        else
+        {
+            bean.setStatus("unsuccess");
+        }
+
+        return "success";
+    }
+
+    public String provision()
+    {
+
+        if(DiscoveryService.provision(bean))
+        {
+            bean.setStatus("success");
+        }
+        else
+        {
+            bean.setStatus("unsuccess");
+        }
+
+        return "success";
+    }
+
 
     @Override
     public DiscoveryBean getModel() {
         return bean;
     }
-
 }

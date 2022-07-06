@@ -14,8 +14,6 @@ public class LoginService
 
     public static boolean login(String username, String password)
     {
-        DAO dao=new DAO();
-
         ArrayList<Object> login= new ArrayList<>();
 
         List<HashMap<String, String>> flag;
@@ -24,7 +22,7 @@ public class LoginService
 
         login.add(password);
 
-        flag = dao.select("select * from loginTable where username=? and password=?", login);
+        flag = DAO.select("select * from loginTable where username=? and password=?", login);
 
         if(!flag.isEmpty())
         {

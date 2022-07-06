@@ -13,7 +13,7 @@
 
   <servlet>
     <servlet-name>MyServletContextListener</servlet-name>
-    <servlet-class>servlet.MyServletContextListener</servlet-class>
+    <servlet-class>servlet.OnServerStart</servlet-class>
     <load-on-startup>0</load-on-startup>
   </servlet>
 

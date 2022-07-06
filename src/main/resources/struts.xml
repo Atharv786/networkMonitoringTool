@@ -24,35 +24,35 @@
             <result name="logout">/index.jsp</result>
         </action>
 
-        <action name="addDeviceUrl" class="action.InsertionAction" method="insertionAction">
-            <result name="insertion" type="json"></result>
+        <action name="addDevice" class="action.DiscoveryAction" method="insertion">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="addMonitor" class="action.ProvisionAction" method="provisionAction">
-            <result name="provision" type="json"></result>
+        <action name="provision" class="action.DiscoveryAction" method="provision">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="discovery" class="action.DiscoveryAction" method="discovery">
-            <result name="discovery" type="json"></result>
+        <action name="discovery" class="action.DiscoveryAction" method="load">
+            <result name="success" type="json"></result>
         </action>
 
-            <action name="monitor" class="action.MonitorAction" method="monitor">
-            <result name="monitor" type="json"></result>
+            <action name="monitor" class="action.MonitorAction" method="load">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="deleteDiscovery" class="action.DeleteDiscovery" method="deleteDiscoveryAction">
-            <result name="deletionSuccessfull" type="json"></result>
+        <action name="delete" class="action.DiscoveryAction" method="delete">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="deleteMonitor" class="action.DeleteMonitor" method="deleteMonitorAction">
-            <result name="deletionSuccessfull" type="json"></result>
+        <action name="deleteMonitor" class="action.MonitorAction" method="delete">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="updateDevice" class="action.UpdateDiscoveryAction" method="updateDiscovery">
-            <result name="updateSuccess" type="json"></result>
+        <action name="update" class="action.DiscoveryAction" method="update">
+            <result name="success" type="json"></result>
         </action>
 
-        <action name="Polling" class="action.PollingAction" method="Polling">
+        <action name="Polling" class="action.MonitorAction" method="polling">
             <result name="success" type="json"></result>
         </action>
 

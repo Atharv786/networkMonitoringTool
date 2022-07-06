@@ -3,16 +3,13 @@ package action;
 import bean.LoginBean;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import helper.ConnectionPoolHandler;
 import org.apache.struts2.ServletActionContext;
-import service.LoginService;
-
-
-import java.util.Map;
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.SessionAware;
+import service.LoginService;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * Created by atharv on 14/4/22.
@@ -20,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class LoginAction extends ActionSupport implements ModelDriven<LoginBean>,SessionAware {
 
     private SessionMap<String, Object> sessionMap;
+
     private LoginBean bean = new LoginBean();
 
     public String login() {
@@ -43,7 +41,9 @@ public class LoginAction extends ActionSupport implements ModelDriven<LoginBean>
     public String logout()
     {
         sessionMap.invalidate();
+
         sessionMap.remove("username");
+
         return "logout";
     }
 

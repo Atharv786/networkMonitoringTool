@@ -6,13 +6,11 @@ import helper.ConnectionPoolHandler;
 
 import javax.servlet.http.HttpServlet;
 
-public class MyServletContextListener extends HttpServlet
+public class OnServerStart extends HttpServlet
 {
     public void init()
     {
-        ConnectionPoolHandler connectionPoolHandler=new ConnectionPoolHandler();
-
-        connectionPoolHandler.createConnection();
+        ConnectionPoolHandler.createConnection();
 
         QuartzScheduler scheduler=new QuartzScheduler();
 

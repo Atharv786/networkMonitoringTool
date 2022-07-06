@@ -1,64 +1,44 @@
 package bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Created by atharv on 21/4/22.
+ * Created by atharv on 5/7/22.
  */
 public class MonitorBean
 {
+
     private String status;
-
-    private String deviceStatus;
-
-    private String name;
-
-    public String getDeviceStatus() {
-        return deviceStatus;
-    }
-
-    public void setDeviceStatus(String deviceStatus) {
-        this.deviceStatus = deviceStatus;
-    }
 
     private String ip;
 
     private String type;
 
-    private int id;
+    private String name;
 
-    public int getId() {
-        return id;
+    private String deviceStatus;
+
+    private String id;
+
+    private HashMap<String, Object> pingStatistic = new HashMap<>();
+
+    private HashMap<String, Object> sshStatistic = new HashMap<>();
+
+    public HashMap<String, Object> getPingStatistic() {
+        return pingStatistic;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPingStatistic(HashMap<String, Object> pingStatistic) {
+        this.pingStatistic = pingStatistic;
     }
 
-    private ArrayList<MonitorBean> monitorBeanList=new ArrayList<>();
-
-    public ArrayList<MonitorBean> getDiscoveryBeanList() {
-        return monitorBeanList;
+    public HashMap<String, Object> getSshStatistic() {
+        return sshStatistic;
     }
 
-    public void setMonitorBeanList(ArrayList<MonitorBean> monitorBeanList) {
-        this.monitorBeanList = monitorBeanList;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setSshStatistic(HashMap<String, Object> sshStatistic) {
+        this.sshStatistic = sshStatistic;
     }
 
     public String getIp() {
@@ -75,5 +55,48 @@ public class MonitorBean
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private ArrayList<MonitorBean> monitorBeanList = new ArrayList<>();
+
+    public ArrayList<MonitorBean> getMonitorBeanList() {
+        return monitorBeanList;
+    }
+
+    public void setMonitorBeanList(ArrayList<MonitorBean> monitorBeanList) {
+        this.monitorBeanList = monitorBeanList;
+    }
+
+    public String getStatus() {
+
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

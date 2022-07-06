@@ -3,13 +3,16 @@ package dao;
 import helper.ConnectionPoolHandler;
 
 import java.sql.*;
+
 import java.util.ArrayList;
+
 import java.util.HashMap;
+
 import java.util.List;
 
 public class DAO
 {
-    public List<HashMap<String, String>> select(String query, ArrayList<Object> values)
+    public static List<HashMap<String, String>> select(String query, ArrayList<Object> values)
     {
         Connection connection = ConnectionPoolHandler.getConnection();
 
@@ -88,7 +91,7 @@ public class DAO
         return data;
     }
 
-    public int update(String query, ArrayList<Object> values)
+    public static int update(String query, ArrayList<Object> values)
     {
 
         Connection connection = ConnectionPoolHandler.getConnection();

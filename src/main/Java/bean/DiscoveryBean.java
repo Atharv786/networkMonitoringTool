@@ -3,29 +3,41 @@ package bean;
 import java.util.ArrayList;
 
 /**
- * Created by atharv on 21/4/22.
+ * Created by atharv on 5/7/22.
  */
 public class DiscoveryBean
 {
+    private String newIp;
+
+    public String getNewIp() {
+        return newIp;
+    }
+
+    public void setNewIp(String newIp) {
+        this.newIp = newIp;
+    }
+
     private String status;
 
     private String name;
 
     private String ip;
 
+    private String username;
+
+    private String password;
+
     private String type;
 
-    private int id;
+    private String id;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
-    private ArrayList<DiscoveryBean> discoveryBeanList=new ArrayList<>();
 
     public ArrayList<DiscoveryBean> getDiscoveryBeanList() {
         return discoveryBeanList;
@@ -35,13 +47,7 @@ public class DiscoveryBean
         this.discoveryBeanList = discoveryBeanList;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private ArrayList<DiscoveryBean> discoveryBeanList = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -59,11 +65,35 @@ public class DiscoveryBean
         this.ip = ip;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

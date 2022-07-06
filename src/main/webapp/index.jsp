@@ -2,9 +2,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="loginPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="JavaScript/Discovery.js"></script>
+    <script src="JavaScript/loginJS.js"></script>
+    <script src="JavaScript/homePageJS.js"></script>
+    <script src="JavaScript/Alerts.js"></script>
+    <script src="JavaScript/DashBoard.js"></script>
+    <script src="JavaScript/Monitor.js"></script>
+    <script src="JavaScript/Ajax.js"></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -40,8 +51,8 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="homePageJS.js"></script>
-    <script src="loginJS.js"></script>
+    <script src="JavaScript/homePageJS.js"></script>
+    <script src="JavaScript/loginJS.js"></script>
 
     <script>
         $(document).ready(function () {
