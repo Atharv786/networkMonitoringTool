@@ -28,9 +28,9 @@ var ajax = {
                 }
             },
 
-            error: function (data)
+            error: function ()
             {
-                alert("Error");
+                alerts.error("Cannot procced request");
             }
 
         });

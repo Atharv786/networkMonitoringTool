@@ -4,6 +4,9 @@ import bean.DiscoveryBean;
 import bean.MonitorBean;
 import dao.DAO;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -18,11 +21,9 @@ public class GetData
 
         try
         {
-            DAO dao = new DAO();
-
             String query = "select count(*), deviceStatus from monitorTable group by deviceStatus;";
 
-            List<HashMap<String, String>> data = dao.select(query, new ArrayList<>());
+            List<HashMap<String, String>> data = DAO.select(query, new ArrayList<>());
 
             int down = 0;
 
@@ -60,7 +61,7 @@ public class GetData
 
             query = "select count(*),deviceStatus,deviceType from monitorTable group by deviceType, deviceStatus";
 
-            data = dao.select(query, new ArrayList<>());
+            data = DAO.select(query, new ArrayList<>());
 
 
             List<HashMap<String, String>> monitorGroup = new ArrayList<>();
@@ -129,25 +130,25 @@ public class GetData
 
             query = "select deviceIp, max(RTT_Time) as rtt from PingPOlling inner join monitorTable on PingPOlling.ID=monitorTable.deviceId where Time_Stamp in (select max(Time_Stamp) from PingPOlling inner join monitorTable on PingPOlling.ID=monitorTable.deviceId group by monitorTable.deviceIp) and RTT_Time!=-1 group by deviceIp order by max(RTT_Time) desc limit 5";
 
-            List<HashMap<String, String>> dataTopRtt = dao.select(query, new ArrayList<>());
+            List<HashMap<String, String>> dataTopRtt = DAO.select(query, new ArrayList<>());
 
             dashboardData.add(dataTopRtt);
 
             query = "select deviceIp, max(CPU) as cpu from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId where TimeStamp in (select max(TimeStamp) from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId group by monitorTable.deviceIp) and CPU!=-1 group by deviceIp order by CPU desc limit 5";
 
-            List<HashMap<String, String>> dataTopCpu = dao.select(query, new ArrayList<>());
+            List<HashMap<String, String>> dataTopCpu = DAO.select(query, new ArrayList<>());
 
             dashboardData.add(dataTopCpu);
 
             query = "select deviceIp, max(Memory) as Memory from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId where TimeStamp in (select max(TimeStamp) from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId group by monitorTable.deviceIp) and Memory!=-1 group by deviceIp order by Memory desc limit 5";
 
-            List<HashMap<String, String>> dataTopMemory = dao.select(query, new ArrayList<>());
+            List<HashMap<String, String>> dataTopMemory = DAO.select(query, new ArrayList<>());
 
             dashboardData.add(dataTopMemory);
 
             query = "select deviceIp, max(Disk) as Disk from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId where TimeStamp in (select max(TimeStamp) from SshDump inner join monitorTable on SshDump.ID=monitorTable.deviceId group by monitorTable.deviceIp) and Disk!=-1 group by deviceIp order by Disk desc limit 5";
 
-            List<HashMap<String, String>> dataTopDisk = dao.select(query, new ArrayList<>());
+            List<HashMap<String, String>> dataTopDisk = DAO.select(query, new ArrayList<>());
 
             dashboardData.add(dataTopDisk);
 
@@ -211,8 +212,6 @@ public class GetData
     {
         HashMap<String, Object> pingPollingData = null;
 
-        DAO dao = new DAO();
-
         pingPollingData = new HashMap<>();
 
         ArrayList<Object> availability = getAvailability(id);
@@ -224,7 +223,7 @@ public class GetData
 
         ArrayList<Object> values = new ArrayList<>(Arrays.asList(id));
 
-        List<HashMap<String, String>> Data = dao.select(query, values);
+        List<HashMap<String, String>> Data = DAO.select(query, values);
 
 
         if (!Data.isEmpty())
@@ -254,8 +253,6 @@ public class GetData
     {
         HashMap<String, Object> sshStatistic = null;
 
-        DAO dao = new DAO();
-
         try
         {
             sshStatistic = new HashMap<>();
@@ -268,7 +265,7 @@ public class GetData
 
             ArrayList<Object> values = new ArrayList<>(Arrays.asList(id));
 
-            List<HashMap<String, String>> barData = dao.select(query, values);
+            List<HashMap<String, String>> barData = DAO.select(query, values);
 
             if (!barData.isEmpty())
             {
@@ -291,7 +288,7 @@ public class GetData
 
                 sshStatistic.put("LiveData", new ArrayList<>(Arrays.asList(barData.get(0).get("CPU"), barData.get(0).get("Memory"), barData.get(0).get("Disk"), barData.get(0).get("UpTime"), barData.get(0).get("TotalDisk"), barData.get(0).get("TotalMemory"))));
 
-                barData = dao.select("select * from PingPOlling where ID=? ORDER BY Time_Stamp DESC limit 1", values);
+                barData = DAO.select("select * from PingPOlling where ID=? ORDER BY Time_Stamp DESC limit 1", values);
 
                 sshStatistic.put("PingData", new ArrayList<>(Arrays.asList("4", barData.get(0).get("RecievedPacket"), barData.get(0).get("PacketLoss"), barData.get(0).get("RTT_Time"))));
 
@@ -308,8 +305,6 @@ public class GetData
 
     public ArrayList<Object> getAvailability(String id)
     {
-
-        DAO dao = new DAO();
 
         ArrayList<Object> availability = null;
 
@@ -333,7 +328,7 @@ public class GetData
 
             ArrayList<Object> values = new ArrayList<>(Arrays.asList(id));
 
-            List<HashMap<String, String>> data = dao.select(query, values);
+            List<HashMap<String, String>> data = DAO.select(query, values);
 
             if (!data.isEmpty())
             {
@@ -372,5 +367,91 @@ public class GetData
         }
 
         return availability;
+    }
+
+    public static Boolean pingData(String ip)
+    {
+        Boolean pingStatus = false;
+
+        ip = ip.replaceAll("\\s", "");
+
+        String  result ="";
+
+        String rtt="";
+
+        ArrayList<String> arrayList= new ArrayList<>();
+
+        arrayList.add("ping");
+
+        arrayList.add("-c");
+
+        arrayList.add("5");
+
+        arrayList.add(ip);
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+
+        processBuilder.command(arrayList);
+
+        try {
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+
+            while ((line = reader.readLine()) != null)
+            {
+                if (line.contains("errors") == true)
+                {
+                    result = line.substring(line.indexOf("errors") + 8, line.indexOf("%"));
+
+                }
+                else if (line.contains("received") == true)
+                {
+                    result = line.substring(line.indexOf("received") + 10, line.indexOf("%"));
+                }
+
+                if (line.contains("rtt") == true)
+                {
+                    String sub = line.substring(line.indexOf("=") + 2);
+
+                    int index = sub.indexOf("/");
+
+                    rtt = line.substring(line.indexOf("=") + 2, line.indexOf("=") + 2 + index);
+                }
+            }
+
+            int packetLoss = Integer.parseInt(result);
+
+            Date date = new Date();
+
+            Timestamp timestamp = new Timestamp(date.getTime());
+
+            if (packetLoss < 50)
+            {
+                pingStatus = true;
+            }
+            else
+            {
+                pingStatus = false;
+            }
+
+            int recievedPacket = 100 - packetLoss;
+
+            recievedPacket /= 25;
+
+            if (packetLoss == 100)
+            {
+                rtt = "0";
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return pingStatus;
     }
 }

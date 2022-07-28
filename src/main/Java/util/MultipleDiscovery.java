@@ -11,19 +11,19 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class MultipleDiscovery
 {
-    static BlockingQueue<DiscoveryBean> queue=new LinkedBlockingQueue<>();
+    static BlockingQueue<DiscoveryBean> queue = new LinkedBlockingQueue<>();
 
     public static void discovery()
     {
-        Boolean valid = true;
+        WebSocket webSocket = new WebSocket();
 
         new Thread(() -> {
 
-            while (valid)
+            while (true)
             {
                 try
                 {
-                    DiscoveryService.provision(queue.take());
+                    webSocket.onMessage(DiscoveryService.provision(queue.take()));
                 }
                 catch (InterruptedException e)
                 {

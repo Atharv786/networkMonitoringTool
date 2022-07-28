@@ -25,24 +25,6 @@ var functions = {
             ajax.ajaxRequest(request);
         });
 
-
-        $("#addDevice").click(function(){
-
-            $(".modal").hide();
-
-            discovery.addDeviceRequest();
-
-        });
-
-
-        $("#update").click(function(){
-
-            $(".modal2").hide();
-
-            discovery.updateRequest();
-
-        });
-
     },
 
     onSuccessButtonBind: function (request) {
@@ -102,33 +84,5 @@ $(document).ready(function()
 
     });
 
-    $("#addDeviceType").click(function ()
-    {
-
-        if($("#addDeviceType").val()=="SSH")
-        {
-            $("#addDeviceUsernameLabel").show();
-            $("#addDeviceUsername").show();
-            $("#addDevicePasswordLabel").show();
-            $("#addDevicePassword").show();
-        }
-        else
-        {
-            $("#addDeviceUsernameLabel").hide();
-            $("#addDeviceUsername").hide();
-            $("#addDevicePasswordLabel").hide();
-            $("#addDevicePassword").hide();
-        }
-
-    }),
-
-
-    $("#reset").click(function ()
-    {
-        $("#addDeviceUsernameLabel").hide();
-        $("#addDeviceUsername").hide();
-        $("#addDevicePasswordLabel").hide();
-        $("#addDevicePassword").hide();
-    })
 
 });

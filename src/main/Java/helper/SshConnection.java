@@ -1,9 +1,6 @@
 package helper;
 
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelShell;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
 
 import java.io.*;
 import java.util.Properties;
@@ -13,6 +10,8 @@ public class SshConnection
     private Session session;
 
     private ChannelShell channel;
+
+    private ChannelExec execChannel;
 
     private final String username;
 
@@ -38,17 +37,35 @@ public class SshConnection
         return session;
     }
 
-    private Channel getChannel()
+    private Channel getChannel(String ChannelType)
     {
+
+        System.out.println(ChannelType);
+
         try
         {
             session = getSession();
 
-            if (session != null && channel == null)
+            if (session != null)
             {
-                channel = (ChannelShell) session.openChannel("shell");
+                if(ChannelType.equals("exec"))
+                {
+                    if (execChannel == null)
+                    {
+                        execChannel = (ChannelExec) session.openChannel("exec");
 
-                channel.connect(10000);
+                        execChannel.connect(10000);
+                    }
+                }
+                else
+                {
+                    if (channel == null)
+                    {
+                        channel = (ChannelShell) session.openChannel("shell");
+
+                        channel.connect(10000);
+                    }
+                }
             }
 
         }
@@ -56,7 +73,16 @@ public class SshConnection
         {
             e.printStackTrace();
         }
-        return channel;
+
+
+        if(ChannelType.equals("exec"))
+        {
+            return execChannel;
+        }
+        else
+        {
+            return channel;
+        }
     }
 
 
@@ -128,6 +154,15 @@ public class SshConnection
 
         String answer = "";
 
+        if(channel.isClosed())
+        {
+            System.out.println("Channel is closed");
+        }
+        else
+        {
+            System.out.println("Channel is open");
+        }
+
         try
         {
             bufferedReader = new BufferedReader(new InputStreamReader(channel.getInputStream()));
@@ -154,23 +189,31 @@ public class SshConnection
     }
 
 
-    public String executeCommands(String commands)
+    public String executeCommands(String commands, String ChannelType)
     {
         try
         {
-            Channel channel = getChannel();
+            Channel channel = getChannel(ChannelType);
 
             if (channel != null)
             {
                 sendCommands(channel, commands);
 
-                return readChannelOutput(channel);
+                String output = readChannelOutput(channel);
+
+                if (!channel.isClosed())
+                {
+                    Thread.sleep(10000);
+                }
+
+                return output;
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -181,6 +224,7 @@ public class SshConnection
         {
             channel.disconnect();
         }
+
         if (session != null && session.isConnected())
         {
             session.disconnect();

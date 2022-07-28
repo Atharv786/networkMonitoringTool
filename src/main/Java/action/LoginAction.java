@@ -11,25 +11,28 @@ import service.LoginService;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-/**
- * Created by atharv on 14/4/22.
- */
+
 public class LoginAction extends ActionSupport implements ModelDriven<LoginBean>,SessionAware {
 
     private SessionMap<String, Object> sessionMap;
 
     private LoginBean bean = new LoginBean();
 
-    public String login() {
+    public String login()
+    {
         HttpSession session = ServletActionContext.getRequest().getSession(true);
 
-        if (LoginService.login(bean.getUsername(), bean.getPassword())) {
+        if (LoginService.login(bean.getUsername(), bean.getPassword()))
+        {
             bean.setStatus("success");
+
             sessionMap.put("username",bean.getUsername());
-        } else
-            {
+        }
+        else
+        {
             bean.setStatus("loginUnsuccessful");
         }
+
         return "login";
     }
 

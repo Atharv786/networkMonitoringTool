@@ -249,7 +249,6 @@ hr {
 {
     border-radius: 9px;
     width: auto;
-    display: none;
     float: right;
     margin-right: 25px;
     margin-top: 25px;
@@ -302,3 +301,19 @@ tr:nth-child(even) {
 {
     cursor: pointer;
 }
+
+
+.Home:hover, .ContactUs:hover, .SignOut:hover
+{
+    cursor: pointer;
+}
+
+
+
+/*Polling CSS*/
+
+
+#closePolling:hover, #closePolling:focus{
+    cursor: pointer;
+}
+

@@ -20,10 +20,8 @@ public class DiscoveryService
         bean.setDiscoveryBeanList(GetData.discovery());
     }
 
-    public static boolean insertion(DiscoveryBean bean)
+    public static void insertion(DiscoveryBean bean)
     {
-        Boolean result = false;
-
         bean.setIp(bean.getIp().replaceAll("\\s",""));
 
         ArrayList<Object> values = new ArrayList<>();
@@ -54,6 +52,10 @@ public class DiscoveryService
 
                 credentials.add(bean.getUsername());
 
+/*
+                credentials.add(Cipher.encode(bean.getPassword()));
+*/
+
                 credentials.add(bean.getPassword());
 
                 credentials.add(bean.getIp());
@@ -62,37 +64,29 @@ public class DiscoveryService
 
                 if(affectedRow!=0)
                 {
-                    result = true;
+                    bean.setStatus("success");
                 }
                 else
                 {
-                    result =  false;
+                    bean.setStatus("unsuccess");
                 }
             }
             else if(affectedRow!=0)
             {
-                result = true;
+                bean.setStatus("success");
             }
         }
         else
         {
             bean.setStatus("DeviceAlreadyPresent");
         }
-
-        return result;
     }
 
-    public static boolean update(DiscoveryBean bean)
+    public static void update(DiscoveryBean bean)
     {
         ArrayList<Object> values = new ArrayList<>();
 
-        Boolean result = false;
-
-        bean.setIp(bean.getIp().replaceAll("\\s",""));
-
-        bean.setType(bean.getType().replaceAll("\\s",""));
-
-        values.add(bean.getIp());
+        values.add(bean.getNewIp());
 
         values.add(bean.getType());
 
@@ -102,81 +96,31 @@ public class DiscoveryService
 
         if(data.isEmpty())
         {
+            System.out.println("True");
+
             values.clear();
 
-            values.add(bean.getIp());
-
-            values.add(bean.getType());
+            values.add(bean.getNewIp());
 
             values.add(bean.getName());
 
             values.add(bean.getId());
 
-            int affectedRow = DAO.update("update addDevice set deviceIP=?, deviceType=?, deviceName=? where id=?", values);
+            int affectedRow = DAO.update("update addDevice set deviceIP=?, deviceName=? where id=?", values);
 
-            if(affectedRow!=0 && bean.getIp().equals("SSH"))
+            if(affectedRow!=0)
             {
-                values.clear();
-
-                values.add(bean.getIp());
-
-                data = DAO.select("select * from credentials where deviceIP=?", values);
-
-                bean.setUsername(bean.getUsername().replaceAll("\\s",""));
-
-                bean.setPassword(bean.getPassword().replaceAll("\\s",""));
-
-                bean.setIp(bean.getIp().replaceAll("\\s",""));
-
-                values.clear();
-
-                values.add(bean.getUsername());
-
-                values.add(bean.getPassword());
-
-                if(!data.isEmpty())
-                {
-                    values.add(bean.getIp());
-
-                    affectedRow = DAO.update("update credentials set deviceUsername=?, devicePassword=? where deviceIP=?", values);
-
-                    if(affectedRow!=0)
-                    {
-                        result = true;
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-                }
-                else
-                {
-                    values.add(bean.getIp());
-
-                    affectedRow = DAO.update("insert into credentials (deviceUsername,devicePassword,deviceIP)"+"values(?,?,?)", values);
-
-                    if(affectedRow!=0)
-                    {
-                        result = true;
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-                }
-
-            }
-            else if(affectedRow!=0)
-            {
-                result = true;
+                bean.setStatus("success");
             }
             else
             {
-                result = false;
+                bean.setStatus("unsuccess");
             }
         }
-
-        return result;
+        else
+        {
+            bean.setStatus("deviceAlreadyPresent");
+        }
     }
 
     public static boolean delete(DiscoveryBean bean)
@@ -197,9 +141,11 @@ public class DiscoveryService
         return result;
     }
 
-    public static boolean provision(DiscoveryBean bean)
+    public static String provision(DiscoveryBean bean)
     {
         String Ip = null;
+
+        String type = null;
 
         String Username = null;
 
@@ -207,31 +153,44 @@ public class DiscoveryService
 
         String status = "Unknown";
 
-        Boolean result = false;
+        String name = null;
+
+        String result = null;
 
         ArrayList<Object> values = new ArrayList<>();
 
-        Ip = bean.getIp();
+        values.add(bean.getId());
+
+        List<HashMap<String, String>> data = DAO.select("select * from addDevice where id=?",values);
+
+        for (HashMap<String, String> datas : data)
+        {
+            System.out.println(datas);
+
+            Ip = datas.get("deviceIP");
+
+            type = datas.get("deviceType");
+
+            name = datas.get("deviceName");
+        }
+
+        System.out.println(Ip+type+name);
+
+        values.clear();
 
         values.add(Ip);
 
-        values.add(bean.getType());
+        values.add(type);
 
-        List<HashMap<String, String>> data  = DAO.select("select * from monitorTable where deviceIP=? and deviceType=?", values) ;
+        data  = DAO.select("select * from monitorTable where deviceIP=? and deviceType=?", values) ;
 
         if(data.isEmpty())
         {
-            values.add(bean.getName());
-
-            values.add(status);
-
-            if (PingDevice.pingDevice(bean.getIp() , String.valueOf(bean.getId())))
+            if (PingDevice.pingDevice(Ip , String.valueOf(bean.getId())))
             {
-                if(bean.getType().equals("SSH"))
+                if(type.equals("SSH"))
                 {
                     values.clear();
-
-                    Ip = Ip.replaceAll("\\s","");
 
                     values.add(Ip);
 
@@ -246,14 +205,15 @@ public class DiscoveryService
 
                     SshConnection sshConnection = new SshConnection(Ip, Username, Password);
 
-                    String deviceName = sshConnection.executeCommands("uname\n");
+                    String deviceName = sshConnection.executeCommands("uname\n", "shell");
 
+                    System.out.println("data : " +deviceName);
 
                     if(deviceName.contains("Linux"))
                     {
-                        values.add(bean.getType());
+                        values.add(type);
 
-                        values.add(bean.getName());
+                        values.add(name);
 
                         values.add(status);
 
@@ -261,31 +221,43 @@ public class DiscoveryService
 
                         if(success!=0)
                         {
-                            result = true;
+                            result = "DeviceAddedSuccesfully";
                         }
                         else
                         {
-                            result = false;
+                            result = "DeviceTypeIsNotLinux";
                         }
                     }
                 }
                 else
                 {
+                    values.add(name);
+
+                    values.add(status);
+
                     int affectedRow = DAO.update("insert into monitorTable(deviceIP,deviceType,deviceName,deviceStatus)"+"values(?,?,?,?)", values);
 
                     if(affectedRow!=0)
                     {
-                        result = true;
+                        result = "DeviceAddedSuccesfully";
                     }
                     else
                     {
-                        result = false;
+                        result = "DeviceCannotAdded";
                     }
 
                 }
 
             }
+            else
+            {
+                result = "Unreachable";
+            }
 
+        }
+        else
+        {
+            result = "deviceAlreadyPresent";
         }
 
         return result;

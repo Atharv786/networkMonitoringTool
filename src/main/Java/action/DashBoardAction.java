@@ -9,7 +9,6 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<Dashbo
 {
     DashboardBean bean=new DashboardBean();
 
-
     public String loadDashboard()
     {
         try
@@ -22,10 +21,6 @@ public class DashBoardAction extends ActionSupport implements ModelDriven<Dashbo
         }
         return "success";
     }
-
-
-
-
 
     @Override
     public DashboardBean getModel() {

@@ -26,68 +26,84 @@ public class DAO
             {
                 preparedStatement = connection.prepareStatement(query);
 
-                int i = 1;
+              for (int i=0; i<values.size(); i++)
+              {
+                  if (values.get(i).getClass() == Integer.class)
+                  {
+                      preparedStatement.setInt(i+1, (Integer) values.get(i));
+                  }
+                  else if (values.get(i).getClass() == String.class)
+                  {
+                      preparedStatement.setString(i+1, (String) values.get(i));
 
-                for (Object value : values)
-                {
-                    if (value.getClass() == Integer.class)
-                    {
-                        preparedStatement.setInt(i, (Integer) value);
+                  } else if (values.get(i).getClass() == Timestamp.class)
+                  {
+                      preparedStatement.setTimestamp(i + 1, (Timestamp) values.get(i));
+                  }
+              }
 
-                    } else if (value.getClass() == String.class)
-                    {
-                        preparedStatement.setString(i, (String) value);
+              ResultSet resultSet = preparedStatement.executeQuery();
 
-                    } else if (value.getClass() == Timestamp.class)
-                    {
-                        preparedStatement.setTimestamp(i, (Timestamp) value);
-                    }
-                    i++;
-                }
+              ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
-                ResultSet resultSet = preparedStatement.executeQuery();
+              int columnCount = resultSetMetaData.getColumnCount();
 
-                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+              data = new ArrayList<>();
 
-                int columnCount = resultSetMetaData.getColumnCount();
+              while (resultSet.next())
+              {
+                  HashMap<String, String> row = new HashMap<>();
 
-                data = new ArrayList<>();
+                  for (int j = 1; j <= columnCount; j++)
+                  {
+                      row.put(resultSetMetaData.getColumnName(j), resultSet.getString(j));
+                  }
 
-                while (resultSet.next())
-                {
-                    HashMap<String, String> row = new HashMap<>();
+                  data.add(row);
+              }
 
-                    for (int j = 1; j <= columnCount; j++)
-                    {
-                        row.put(resultSetMetaData.getColumnName(j), resultSet.getString(j));
-                    }
 
-                    data.add(row);
-                }
             }
-
-            ConnectionPoolHandler.releaseConnection(connection);
+            else
+            {
+                throw new Exception("Cannot get connection OR Connection is closed");
+            }
 
         }
         catch (SQLException e)
         {
+/*
+            bean.setStatus = "unsuccess";
+*/
+
             e.printStackTrace();
 
-        } finally
+        } catch (Exception e)
         {
-            ConnectionPoolHandler.releaseConnection(connection);
-
+            e.printStackTrace();
+        }
+        finally
+        {
             try
             {
+                if(connection != null)
+                {
+                    ConnectionPoolHandler.releaseConnection(connection);
+                }
+
                 if (preparedStatement != null)
                 {
-                    preparedStatement.close();
+
+                        preparedStatement.close();
+
                 }
+
             } catch (SQLException e)
             {
                 e.printStackTrace();
             }
         }
+
         return data;
     }
 
@@ -106,30 +122,30 @@ public class DAO
             {
                 preparedStatement = connection.prepareStatement(query);
 
-                int i = 1;
-
-                for (Object value : values)
+                for (int i=0; i<values.size(); i++)
                 {
-                    if (value.getClass() == Integer.class)
+                    if (values.get(i).getClass() == Integer.class)
                     {
-                        preparedStatement.setInt(i, (Integer) value);
+                        preparedStatement.setInt(i+1, (Integer) values.get(i));
 
-                    } else if (value.getClass() == String.class)
-                    {
-                        preparedStatement.setString(i, (String) value);
-
-                    } else if (value.getClass() == Timestamp.class)
-                    {
-                        preparedStatement.setTimestamp(i, (Timestamp) value);
                     }
+                    else if (values.get(i).getClass() == String.class)
+                    {
+                        preparedStatement.setString(i+1, (String) values.get(i));
 
-                    i++;
+                    }
+                    else if (values.get(i).getClass() == Timestamp.class)
+                    {
+                        preparedStatement.setTimestamp(i+1, (Timestamp) values.get(i));
+                    }
                 }
+
                 affectedRow = preparedStatement.executeUpdate();
             }
-
-            ConnectionPoolHandler.releaseConnection(connection);
-
+            else
+            {
+                throw new Exception("Cannot get connection OR Connection is closed");
+            }
 
         }
         catch (SQLIntegrityConstraintViolationException e)
@@ -140,7 +156,11 @@ public class DAO
         {
             e.printStackTrace();
 
-        } finally
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
         {
             ConnectionPoolHandler.releaseConnection(connection);
 

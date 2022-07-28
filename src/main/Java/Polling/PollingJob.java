@@ -21,11 +21,9 @@ public class PollingJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
     {
 
-        DAO dao = new DAO();
-
         ArrayList<Object> job = new ArrayList<>();
 
-        List<HashMap<String, String>> data= dao.select("select * from monitorTable", job);
+        List<HashMap<String, String>> data= DAO.select("select * from monitorTable", job);
 
         if(!data.isEmpty())
         {

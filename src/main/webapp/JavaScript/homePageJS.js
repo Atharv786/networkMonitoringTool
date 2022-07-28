@@ -8,119 +8,19 @@ $(document).ready(function(){
 
     $(".AboutUs").click(function(){
 
-        $(".PollingData").hide();
-
-        $(".Dashboard").hide();
-
-        $(".monitor").hide();
-
-        $(".discovery").show();
-
-        $(".addDeviceButton").show();
-
-        $(".Content").hide();
-
-        $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
-        $(".Home, .ContactUs, .SignOut").css({"background-color":"#36a9e1","color":"white"});
-        $(".AboutUs").hover(function(){
-            $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
-        });
-        $(".Home").hover(function(){
-            $(".Home").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".Home").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".ContactUs").hover(function(){
-            $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".ContactUs").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".SignOut").hover(function(){
-            $(".SignOut").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".SignOut").css({"background-color":"#36a9e1","color":"white"});
-        });
+        discovery.load();
     });
 
     $(".Home").click(function(){
 
-        $(".PollingData").hide();
-
-        $(".Dashboard").show();
-
-        $(".monitor").hide();
-
-        $(".addDeviceButton").hide();
-
-        $(".discovery").hide();
-
         dashboard.load();
 
-        $(".Content").html("<h1>Hello Home Page</h1>");
-        $(".Content").css({"text-align":"center"});
-        $(".Home").css({"background-color":"white","color":"#36a9e1"});
-        $(".AboutUs, .ContactUs, .SignOut").css({"background-color":"#36a9e1","color":"white"});
-        $(".Home").hover(function(){
-            $(".Home").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".Home").css({"background-color":"white","color":"#36a9e1"});
-        });
-        $(".AboutUs").hover(function(){
-            $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".AboutUs").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".ContactUs").hover(function(){
-            $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".ContactUs").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".SignOut").hover(function(){
-            $(".SignOut").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".SignOut").css({"background-color":"#36a9e1","color":"white"});
-        });
     });
 
     $(".ContactUs").click(function()
     {
-        $(".PollingData").hide();
-
-        $(".Dashboard").hide();
-
-        $(".monitor").show();
-
-        $(".addDeviceButton").hide();
-
-        $(".discovery").hide();
-
         monitor.load();
 
-        $(".Content").css({"text-align":"center"});
-        $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
-        $(".Home, .AboutUs, .SignOut").css({"background-color":"#36a9e1","color":"white"});
-        $(".ContactUs").hover(function(){
-            $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".ContactUs").css({"background-color":"white","color":"#36a9e1"});
-        });
-        $(".AboutUs").hover(function(){
-            $(".AboutUs").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".AboutUs").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".Home").hover(function(){
-            $(".Home").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".Home").css({"background-color":"#36a9e1","color":"white"});
-        });
-        $(".SignOut").hover(function(){
-            $(".SignOut").css({"background-color":"white","color":"#36a9e1"});
-        },function(){
-            $(".SignOut").css({"background-color":"#36a9e1","color":"white"});
-        });
     });
 
     $("#SignOut").click(function()
@@ -134,35 +34,88 @@ $(document).ready(function(){
 
     });
 
-    $("#closePolling").click(function()
-    {
-        $(".nav").show();
-        $(".PollingData").hide();
-        $(".Dashboard").hide();
-        $(".monitor").show();
-        $(".addDeviceButton").hide();
-        $(".discovery").hide();
+
+    $("#content").on("click",".addDeviceButton",function () {
+        $(".modal").show();
+        $("#ipValidate").html("");
+        $("#invalidName").html("");
+        $("#invalidUsername").html("");
+        $("#invalidPassword").html("");
     });
 
-    $("#addDevice").click(function()
+    $("#content").on("click",".close",function () {
+        $(".modal").hide();
+    });
+
+    $("#content").on("click",".close2",function () {
+        $(".modal2").hide();
+    });
+
+    $("#content").on("click","#addDeviceType",function ()
     {
-        var table = $('#discoveryTable').DataTable();
 
-        var rows = table
-            .rows()
-            .remove()
-            .draw();
-
-        var request = {
-
-            url : "discovery",
-            type : "POST",
-            callback : functions.onload
+        if($("#addDeviceType").val()=="SSH")
+        {
+            $("#addDeviceUsernameLabel").show();
+            $("#addDeviceUsername").show();
+            $("#addDevicePasswordLabel").show();
+            $("#addDevicePassword").show();
+        }
+        else
+        {
+            $("#addDeviceUsernameLabel").hide();
+            $("#addDeviceUsername").hide();
+            $("#addDevicePasswordLabel").hide();
+            $("#addDevicePassword").hide();
         }
 
-        ajax.ajaxRequest(request);
+    });
 
+    $("#content").on("click","#reset",function ()
+    {
+        $("#addDeviceUsernameLabel").hide();
+        $("#addDeviceUsername").hide();
+        $("#addDevicePasswordLabel").hide();
+        $("#addDevicePassword").hide();
+    });
+
+
+    $("#content").on("click","#addDevice",function(){
+
+        discovery.addDeviceRequest();
+
+    });
+
+    $("#content").on("click","#update",function(){
+
+        discovery.updateRequest();
+    });
+
+    $("#content").on("click","#closePolling",function()
+    {
+        $(".nav").show();
+
+        monitor.load();
+    });
+
+    $("#content").on("focusout","#addDeviceName",function ()
+    {
+        validator.name($("#addDeviceName").val());
+    });
+
+    $("#content").on("focusout","#addDeviceIP",function ()
+    {
+        validator.ip($("#addDeviceIP").val());
+    });
+
+    $("#content").on("focusout","#addDeviceUsername",function ()
+    {
+        validator.username($("#addDeviceUsername").val())
+    });
+
+    $("#content").on("focusout","#addDevicePassword",function ()
+    {
+        validator.password($("#addDevicePassword").val())
     });
 
 });
-

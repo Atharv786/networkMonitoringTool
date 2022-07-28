@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ConnectionPoolHandler
@@ -22,12 +23,11 @@ public class ConnectionPoolHandler
 
     static int MAX_POOL_SIZE = 20;
 
-    static int count=0;
+    static AtomicInteger count= new AtomicInteger(0);
 
 
     public static void createConnection()
     {
-
         try
         {
             Class.forName("com.mysql.cj.jdbc.Driver" );
@@ -38,7 +38,8 @@ public class ConnectionPoolHandler
         }
 
 
-        for (int i = 0; i <INITIAL_POOL_SIZE ; i++) {
+        for (int i = 0; i <INITIAL_POOL_SIZE ; i++)
+        {
 
             Connection connection = null;
 
@@ -64,22 +65,19 @@ public class ConnectionPoolHandler
 
     public static Connection getConnection()
     {
-
-        Connection connection=null;
+        Connection connection = null;
 
         try
         {
-            if(count>=INITIAL_POOL_SIZE && count<= MAX_POOL_SIZE)
+            if(count.get()>=INITIAL_POOL_SIZE && count.get()< MAX_POOL_SIZE)
             {
-                INITIAL_POOL_SIZE++;
-
-                Connection connection1 = null;
                 try
                 {
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/networkMonitoringTool", "root", "Mind@123" );
 
-                    connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/networkMonitoringTool", "root", "Mind@123" );
+                    connectionPool.put(connection);
 
-                    connectionPool.put(connection1);
+                    connection = connectionPool.take();
                 }
                 catch (SQLException e)
                 {
@@ -91,30 +89,34 @@ public class ConnectionPoolHandler
                 }
 
             }
+            else
+            {
+                connection = connectionPool.take();
+            }
 
-
-            connection=connectionPool.take();
 
             if(connection.isClosed())
             {
                 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/networkMonitoringTool", "root", "Mind@123" );
 
                 connectionPool.put(connection);
+            }
 
-                count++;
-            }
-            else
-            {
-                count++;
-            }
+            count.set(count.get()+1);
+
 
         }
         catch (InterruptedException e)
         {
             e.printStackTrace();
+            
         } catch (SQLException e)
         {
             e.printStackTrace();
+        }
+        catch (Exception exception)
+        {
+            exception.getMessage();
         }
 
         return connection;
@@ -124,23 +126,29 @@ public class ConnectionPoolHandler
     {
         try
         {
-
-            if(count>10)
+            if(count.get()>10)
             {
                 INITIAL_POOL_SIZE--;
-            }
 
-            if(!connection.isClosed())
-            {
-                connectionPool.put(connection);
+                connectionPool.remove(connection);
+
+                connection.close();
             }
             else
             {
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/networkMonitoringTool", "root", "Mind@123" );
+                if(!connection.isClosed())
+                {
+                    connectionPool.put(connection);
+                }
+                else
+                {
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/networkMonitoringTool", "root", "Mind@123" );
 
-                connectionPool.put(connection);
+                    connectionPool.put(connection);
+                }
             }
 
+            count.set(count.get()-1);
         }
         catch (InterruptedException e)
         {

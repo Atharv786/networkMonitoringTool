@@ -15,11 +15,22 @@ var discovery = {
 
     onload: function (data)
     {
-        console.log("data"+data.json.status);
 
-        table = $('#discoveryTable').DataTable({lengthMenu: [5, 10, 20, 50, 100, 200, 500], destroy: true});
+        if(data.json.status=="unsuccess")
+        {
+            alerts.error("Discovery grid cannot loaded");
+        }
+        else
+        {
+            $("#content").html('<button class="addDeviceButton">Add Device</button><div class="discovery" style="background-color:white; width: 70%; margin-left: 15%; margin-top: 5%"> <h2 class="h1">Discovery Table</h2> <table id="discoveryTable" style="width: 98%; background-color: #f1f1f1"> <thead> <tr> <th>Name</th> <th>IP/Host</th> <th>Type</th> <th>Operation</th> </tr></thead> </table></div><div id="id01" class="modal"> <span class="close" title="Close Modal">&times;</span> <form class="modal-content"> <div class="container"> <h1>Add Device</h1> <hr> <label for="addDeviceName"><b>Device Name</b></label> <input type="text" placeholder="Enter Name" name="name" id="addDeviceName" ><div id="invalidName"></div> <label for="addDeviceIP"><b>IP/Host</b></label> <input type="text" placeholder="Enter IP/Host" name="ip" id="addDeviceIP" > <div id="ipValidate"></div><label for="addDeviceType"><b>Device Type</b></label> <select name="type" id="addDeviceType"> <option id="Ping" value="Ping">Ping</option> <option id="SSH" value="SSH">SSH</option> </select> <label for="addDeviceUsername" id="addDeviceUsernameLabel" style="display: none"><b>Username</b></label> <input type="text" placeholder="Enter Username" name="username" id="addDeviceUsername" style="display: none" ><div id="invalidUsername"></div> <label for="addDevicePassword" id="addDevicePasswordLabel" style="display: none"><b>Password</b></label> <input type="password" placeholder="Enter Password" name="password" id="addDevicePassword" style="display: none" > <div id="invalidPassword"></div><div class="clearfix"> <input type="reset" id="reset" name="reset" class="reset"></input> <input type="button" class="addDevice" value="Add Device" id="addDevice" name="addDevice"></input> </div></></form></div><div id="id02" class="modal2" style="display: none"> <span onclick="document.getElementById("id02").style.display="none"" class="close2" title="Close Modal">&times;</span> <form class="modal-content2"> <div class="container2"> <h1>Update Device</h1> <hr> <input type="text" name="type" id="type" style="display: none" > <input type="text" name="ip" id="ip" style="display: none"> <input type="text" name="id" id="id" style="display: none" > <label for="addDeviceName2"><b>Device Name</b></label> <input type="text" placeholder="Enter Name" name="name" id="addDeviceName2" required/> <h4 id="invalidName"></h4> <label for="addDeviceIP2"><b>IP/Host</b></label> <input type="text" placeholder="Enter IP/Host" name="newIp" id="addDeviceIP2" required/> <h4 id="invalidIp"></h4> <label for="addDeviceType2"><b>Device Type</b></label> <select name="type" id="addDeviceType2"> <option id="Ping2" value="Ping">Ping</option> <option id="SSH2" value="SSH">SSH</option> </select> <div class="clearfix2"> <input type="button" class="update" value="Update" id="update" name="update"></input> </div></div></form></div> ');
 
-        discovery.adddata(data, table);
+            socket.createSocket();
+
+            table = $('#discoveryTable').DataTable({lengthMenu: [5, 10, 20, 50, 100, 200, 500], destroy: true});
+
+            discovery.adddata(data, table);
+        }
+
     },
 
     adddata: function (data)
@@ -34,17 +45,8 @@ var discovery = {
     {
         var id=$(that).data("id");
 
-        var ip=$(that).data("ip");
-
-        var name=$(that).data("name");
-
-        var type=$(that).data("type");
-
         var param = {
             id : id,
-            ip : ip,
-            name : name,
-            type: type
         }
 
         var request = {
@@ -55,58 +57,6 @@ var discovery = {
         }
 
         ajax.ajaxRequest(request);
-
-        var table = $('#monitorTable').DataTable();
-
-        var rows = table.rows().remove().draw();
-    },
-
-
-    provisionCallback: function (request)
-    {
-
-        if(request.json.status=="success")
-        {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["success"]("Monitor added succesfully", "Success");
-        }
-        else
-        {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["error"]("Monitor cannot added", "Error");
-        }
     },
 
 
@@ -127,36 +77,16 @@ var discovery = {
         }
 
         ajax.ajaxRequest(request);
-
-        var table = $('#discoveryTable').DataTable();
-
-        var rows = table.rows().remove().draw();
     },
 
     deleteCallback : function (request)
     {
+
         if(request.json.status=="success")
         {
             discovery.load();
 
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["success"]("Deletion successfull", "Success");
+            alerts.success("Deletion successfull", "Success");
 
         }
     },
@@ -166,303 +96,170 @@ var discovery = {
     {
         $(".modal2").show();
 
-        var type=$(that).data("type");
+        $("#id").val($(that).data("id"));
+        $("#ip").val($(that).data("ip"));
+        $("#addDeviceName2").val($(that).data("name"));
+        $("#addDeviceIP2").val($(that).data("ip"));
+        $("#addDeviceType2").val($(that).data("type"));
 
-        var id=$(that).data("id");
+        $("#invalidIp").html("");
+        $("#invalidName").html("");
 
-        var ip=$(that).data("ip");
-
-        var name=$(that).data("name");
-
-        $("#id").val(id);
-
-        $("#ip").val(ip);
-
-        if(type=="Ping")
-        {
-
-            $("#addDeviceName2").val(name);
-            $("#addDeviceIP2").val(ip);
-            $("#addDeviceType2").val("Ping");
-            $("#addDeviceUsernameLabel2").hide();
-            $("#addDeviceUsername2").hide();
-            $("#addDevicePasswordLabel2").hide();
-            $("#addDevicePassword2").hide();
-            $("#SSH2,#Ping2").hide();
-        }
-        else
-        {
-            $("#addDeviceName2").val(name);
-            $("#addDeviceIP2").val(ip);
-            $("#addDeviceType2").val("SSH");
-            $("#addDeviceUsernameLabel2").show();
-            $("#addDeviceUsername2").show();
-            $("#addDevicePasswordLabel2").show();
-            $("#addDevicePassword2").show();
-            $("#Ping2, #SSH2").hide();
-        }
+        $("#Ping2").hide();
+        $("#SSH2").hide();
 
     },
 
     updateRequest : function ()
     {
-
-        if($("#addDeviceType2").val()=="SSH")
+        var param = $('.modal-content2').serializeArray().reduce(function (finalParam, currentValue)
         {
-            var name = $("#addDeviceName2").val();
-            var newIp = $("#addDeviceIP2").val();
-            var type = $("#addDeviceType2").val();
-            var username = $("#addDeviceUsername2").val();
-            var password = $("#addDevicePassword2").val();
+            finalParam[currentValue.name] = currentValue.value;
+            return finalParam;
+        }, {});
 
-            var id=$("#id").val();
-            var ip=$("#ip").val();
+        param.ip = param.ip.trim();
+        param.newIp = param.newIp.trim();
 
 
+        if(validator.ip6Validator(param.newIp))
+        {
+            $("#invalidIp").html("<h4 style='color: red; font-size: 15px; margin-top: -30px'>IPv6 not allowed</h4>")
+        }
+        else
+        {
+            if(param.newIp=="")
+            {
+                $("#invalidIp").html("<h4 style='color: red; font-size: 15px; margin-top: -30px'>IPv4 is mandatory</h4>")
+            }
+            else if(validator.ipValidator(param.newIp))
+            {
+                var request = {
+                    url: "update",
+                    param: param,
+                    type: "POST",
+                    callback: discovery.updateCallback
+                }
 
-            var param = {
-
-                name : name,
-                type : type,
-                newIp : newIp,
-                username : username,
-                password : password,
-                id: id,
-                ip: ip
+                ajax.ajaxRequest(request);
+            }
+            else
+            {
+                $("#invalidIp").html("<h4 style='color: red; font-size: 15px; margin-top: -30px'>Entered IPv4 is not valid</h4>")
             }
         }
-
-        if($("#addDeviceType2").val()=="Ping")
-        {
-            var name = $("#addDeviceName2").val();
-            var newIp = $("#addDeviceIP2").val();
-            var type = $("#addDeviceType2").val();
-            var id = $("#id").val();
-            var ip = $("#ip").val();
-
-
-
-            var param = {
-
-                name : name,
-                type : type,
-                newIp : newIp,
-                id: id,
-                ip: ip
-            }
-        }
-
-        var request = {
-            url: "update",
-            param: param,
-            type: "POST",
-            callback: discovery.updateCallback
-
-        }
-
-        ajax.ajaxRequest(request);
 
     },
 
     updateCallback: function (request)
     {
+        discovery.load();
 
         if(request.json.status=="success")
         {
-            var table = $('#discoveryTable').DataTable();
-
-            var rows = table.rows().remove().draw();
-
-            discovery.load();
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["success"]("Update successfull", "Success");
+            alerts.success("Update successfull", "Success");
         }
-
-        if(request.jdeletionSuccessfullson.status=="unsuccess")
+        else if(request.json.status=="unsuccess")
         {
-            var table = $('#discoveryTable').DataTable();
-
-            var rows = table.rows().remove().draw();
-
-            discovery.reload();
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["error"]("Update unsuccessfull", "Error");
+            alerts.error("Update unsuccessfull", "Error");
         }
-
-        if(request.json.status=="fieldsRequired")
+        else
         {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["warning"]("All fields are required", "Warning");
+            alerts.warning("Device is already present");
         }
 
     },
 
     addDeviceRequest : function ()
     {
-        if($("#addDeviceType").val()=="SSH")
-        {
-            var name = $("#addDeviceName").val();
-            var ip = $("#addDeviceIP").val();
-            var type = $("#addDeviceType").val();
-            var username = $("#addDeviceUsername").val();
-            var password = $("#addDevicePassword").val();
+        var param = $('.modal-content').serializeArray().reduce(function (finalParam, currentValue)
+       {
+           finalParam[currentValue.name] = currentValue.value;
+           return finalParam;
+       }, {});
 
-            var param = {
 
-                name : name,
-                type : type,
-                ip : ip,
-                username : username,
-                password : password
-            }
-        }
+       param.ip = param.ip.trim();
+       param.username = param.username.trim();
+       param.password = param.password.trim();
 
-        if($("#addDeviceType").val()=="Ping")
-        {
-            var name = $("#addDeviceName").val();
-            var ip = $("#addDeviceIP").val();
-            var type = $("#addDeviceType").val();
 
-            var param = {
+       if(param.type=="SSH")
+       {
+           if(validator.ip(param.ip) && validator.name(param.name) && validator.username(param.username) && validator.password(param.password))
+           {
+               var request = {
+                   url: "addDevice",
+                   param: param,
+                   type: "POST",
+                   callback: discovery.addDeviceCallback
+               }
 
-                name : name,
-                type : type,
-                ip : ip,
-            }
-        }
+               ajax.ajaxRequest(request);
+           }
+       }
+       else
+       {
+           if(validator.ip(param.ip))
+           {
+               var request = {
+                   url: "addDevice",
+                   param: param,
+                   type: "POST",
+                   callback: discovery.addDeviceCallback
+               }
 
-        var request = {
-            url: "addDevice",
-            param: param,
-            type: "POST",
-            callback: discovery.addDeviceCallback
+               ajax.ajaxRequest(request);
+           }
+       }
 
-        }
 
-        ajax.ajaxRequest(request);
+       /*if(validator.ip6Validator(param.ip))
+       {
+           $("#ipValidate").html("<h4 style='color: red; font-size: 15px; margin-top: -14px'>IPv6 not allowed</h4>")
+       }
+       else
+       {
+           if(param.ip=="")
+           {
+               $("#ipValidate").html("<h4 style='color: red; font-size: 15px; margin-top: -14px'>IPv4 is mandatory</h4>")
+           }
+           else if(validator.ipValidator(param.ip))
+           {
+               $("#ipValidate").html("");
+
+               var request = {
+                   url: "addDevice",
+                   param: param,
+                   type: "POST",
+                   callback: discovery.addDeviceCallback
+               }
+
+               ajax.ajaxRequest(request);
+           }
+           else
+           {
+               $("#ipValidate").html("<h4 style='color: red; font-size: 15px; margin-top: -14px'>Entered IPv4 is not valid</h4>")
+           }
+       }*/
 
     },
 
     addDeviceCallback: function (request){
 
-        var table = $('#discoveryTable').DataTable();
-
-        var rows = table.rows().remove().draw();
-
         discovery.load();
 
-        if(request.json.status=="invalid")
+        if(request.json.status=="DeviceAlreadyPresent")
         {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["warning"]("All fields are required", "Warning");
+           alerts.warning("Device is laready present", "Warning");
         }
         else if(request.json.status=="success")
         {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["success"]("Monitor added Successfully", "Success");
+            alerts.success("Monitor added Successfully", "Success");
         }
         else if(request.json.status=="unsuccess")
         {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr["error"]("Device not added", "Error");
+            alerts.error("Device not added", "Error");
         }
     },
 }

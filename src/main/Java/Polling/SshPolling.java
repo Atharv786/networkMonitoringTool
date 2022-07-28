@@ -69,9 +69,13 @@ public class SshPolling extends RecursiveTask<Boolean>
             Passowrd = row.get("devicePassword");
         }
 
+/*
+        Passowrd = Cipher.decode(Passowrd);
+*/
+
         SshConnection sshConnection=new SshConnection(Ip, Username, Passowrd);
 
-        String  result = sshConnection.executeCommands("free -m | grep Mem | awk '{print $3}'\n free -m | grep Mem | awk '{print $2}'\n df -hT /home | grep dev | awk '{print $6}' \n df -hT /home | grep dev | awk '{print $3}' \n top -bn  2 | grep Cpu\n uptime -p\n");
+        String  result = sshConnection.executeCommands("free -m | grep Mem | awk '{print $3}'\n free -m | grep Mem | awk '{print $2}'\n df -hT /home | grep dev | awk '{print $6}' \n df -hT /home | grep dev | awk '{print $3}' \n top -bn  2 | grep Cpu\n uptime -p\n", "shell");
 
         values.add(id);
 
@@ -174,9 +178,6 @@ public class SshPolling extends RecursiveTask<Boolean>
 
 
         values.add(Ip);
-
-
-        System.out.println(values);
 
         dao.update("insert into SshDump(ID,Memory,TotalMemory,Disk,TotalDisk,CPU,UpTime,TimeStamp,IP)"+"values(?,?,?,?,?,?,?,?,?)",values);
 

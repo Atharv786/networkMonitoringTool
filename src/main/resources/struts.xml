@@ -6,6 +6,7 @@
 
 <struts>
 
+    <constant name="struts.action.excludePattern" value=".*server-endpoint"/>
 
     <constant name="struts.devMode" value="true"/>
 
@@ -32,7 +33,7 @@
             <result name="success" type="json"></result>
         </action>
 
-        <action name="discovery" class="action.DiscoveryAction" method="load">
+        <action name="discovery" class="action.DiscoveryLoadAction" method="load">
             <result name="success" type="json"></result>
         </action>
 
