@@ -24,19 +24,26 @@ var monitor = {
         {
             $("#content").html('<div class="monitor" style="background-color:white; width: 70%; margin-left: 15%; margin-top: 5%"> <h2 class="h1">Monitor Table</h2> <table id="monitorTable" style="width: 98%; background-color: #f1f1f1"> <thead> <tr> <th>IP/Host</th> <th>Type</th> <th>Status</th> <th>Action</th> </tr></thead> </table></div>');
 
-            table = $('#monitorTable').DataTable({lengthMenu: [5, 10, 20, 50, 100, 200, 500], destroy: true});
+            table = $('#monitorTable').DataTable({lengthMenu: [5, 10, 20, 50, 100, 200, 500], destroy: true,
 
+                data: data.json.monitorBeanList,
+
+                columns: [{ data: 'ip' },{ data: 'type' },{ data: 'deviceStatus' },{ data: 'operations' }]
+            });
+
+/*
             monitor.adddata(data, table);
+*/
         }
     },
 
-    adddata: function (data)
+    /*adddata: function (data)
     {
         $.each(data.json.monitorBeanList, function ()
         {
             table.row.add([this.ip, this.type, this.deviceStatus, "<button onclick='monitor.pollingRequest(this) 'data-id='" + this.id + "' data-ip='" + this.ip + "' data-type='" + this.type + "' class='monitorActionButton' style='width: 32%;'>Action</button><button onclick='monitor.deleteRequest(this)' data-id='" + this.id + "' data-type='" + this.type + "' class='deleteButton' style='width: 32%'>Delete</button>"]).draw();
         });
-    },
+    },*/
 
     pollingRequest : function(that)
     {

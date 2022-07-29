@@ -6,18 +6,18 @@ $(document).ready(function(){
 
     discovery.load();
 
-    $(".AboutUs").click(function(){
+    $(".DiscoveryTab").click(function(){
 
         discovery.load();
     });
 
-    $(".Home").click(function(){
+    $(".DashBoardTab").click(function(){
 
         dashboard.load();
 
     });
 
-    $(".ContactUs").click(function()
+    $(".MonitorTab").click(function()
     {
         monitor.load();
 
@@ -100,22 +100,38 @@ $(document).ready(function(){
 
     $("#content").on("focusout","#addDeviceName",function ()
     {
-        validator.name($("#addDeviceName").val());
+        validator.required($("#addDeviceName").val(), "#invalidName");
     });
 
     $("#content").on("focusout","#addDeviceIP",function ()
     {
-        validator.ip($("#addDeviceIP").val());
+        validator.ip($("#addDeviceIP").val(), "#invalidIp");
     });
 
     $("#content").on("focusout","#addDeviceUsername",function ()
     {
-        validator.username($("#addDeviceUsername").val())
+        validator.required($("#addDeviceUsername").val(), "#invalidUsername")
     });
 
     $("#content").on("focusout","#addDevicePassword",function ()
     {
-        validator.password($("#addDevicePassword").val())
+        validator.required($("#addDevicePassword").val(), "#invalidPassword")
     });
+
+
+
+
+
+
+    $("#content").on("focusout","#addDeviceName2",function ()
+    {
+        validator.updateRequired($("#addDeviceName2").val(), "#invalidName2");
+    });
+
+    $("#content").on("focusout","#addDeviceIP2",function ()
+    {
+        validator.updateIp($("#addDeviceIP2").val());
+    });
+
 
 });

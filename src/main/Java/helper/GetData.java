@@ -177,6 +177,7 @@ public class GetData
             bean.setName(row.get("deviceName"));
             bean.setIp(row.get("deviceIP"));
             bean.setType(row.get("deviceType"));
+            bean.setOperation("<button onclick='discovery.provisionRequest(this) 'data-id='" + row.get("id") + "' data-type='" + row.get("deviceType") + "' data-ip='" + row.get("deviceIP") + " 'data-name='" + row.get("deviceName") + "' class='provisionButton' style='width: 32%;'>Provision</button><button onclick='discovery.updateForm(this)' data-id='" +row.get("id")+ "' data-type='" + row.get("deviceType") + "' data-ip='" + row.get("deviceIP") + " 'data-name='" + row.get("deviceName") + "' class='updateButton' style='width: 32%'>Update</button><button onclick='discovery.deleteRequest(this)' data-id='"+row.get("id")+"' class='deleteButton' style='width: 32%'>Delete</button>");
 
             discoveryBeanList.add(bean);
         }
@@ -201,6 +202,7 @@ public class GetData
             bean.setIp(row.get("deviceIP"));
             bean.setType(row.get("deviceType"));
             bean.setDeviceStatus(row.get("deviceStatus"));
+            bean.setOperations("<button onclick='monitor.pollingRequest(this) 'data-id='" + row.get("deviceId") + "' data-ip='" + row.get("deviceIP") + "' data-type='" + row.get("deviceType") + "' class='monitorActionButton' style='width: 32%;'>Action</button><button onclick='monitor.deleteRequest(this)' data-id='" + row.get("deviceId") + "' data-type='" + row.get("deviceType") + "' class='deleteButton' style='width: 32%'>Delete</button>");
 
             monitorBeanList.add(bean);
         }

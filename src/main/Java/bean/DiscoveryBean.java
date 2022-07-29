@@ -31,6 +31,16 @@ public class DiscoveryBean
 
     private String id;
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    private String operation;
+
     public String getId() {
         return id;
     }

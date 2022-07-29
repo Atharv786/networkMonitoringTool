@@ -297,13 +297,13 @@ tr:nth-child(even) {
     padding:15px 15px;
 }
 
-.AboutUs:hover
+.DiscoveryTab:hover
 {
     cursor: pointer;
 }
 
 
-.Home:hover, .ContactUs:hover, .SignOut:hover
+.DashBoardTab:hover, .MonitorTab:hover, .SignOut:hover
 {
     cursor: pointer;
 }

@@ -21,6 +21,12 @@ public class MonitorBean
 
     private String id;
 
+    public String getOperations() {
+        return operations;
+    }
+
+    private String operations;
+
     private HashMap<String, Object> pingStatistic = new HashMap<>();
 
     private HashMap<String, Object> sshStatistic = new HashMap<>();
@@ -98,5 +104,9 @@ public class MonitorBean
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setOperations(String operations) {
+        this.operations = operations;
     }
 }

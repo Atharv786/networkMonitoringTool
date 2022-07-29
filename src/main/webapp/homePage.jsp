@@ -42,9 +42,9 @@
 
 <div class="nav">
     <ul>
-        <li><a class="Home"><i class="fa fa-home icon"></i> Dashboard</a></li>
-        <li><a class="AboutUs"><i class="fa fa-search icon"></i> Discovery</a></li>
-        <li><a class="ContactUs"><i class="fa fa-desktop icon"></i> Monitor</a></li>
+        <li><a class="DashBoardTab"><i class="fa fa-home icon"></i> Dashboard</a></li>
+        <li><a class="DiscoveryTab"><i class="fa fa-search icon"></i> Discovery</a></li>
+        <li><a class="MonitorTab"><i class="fa fa-desktop icon"></i> Monitor</a></li>
         <div class="navbar">
             <li><a class="SignOut" id="SignOut"><i class="fa fa-sign-out icon" style="font-size: 18px;"></i> SignOut</a></li>
         </div>
